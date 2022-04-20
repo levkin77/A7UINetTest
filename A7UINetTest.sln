@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32407.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A7UINetTest", "A7UINetTest\A7UINetTest.csproj", "{6160537F-C0E9-4F2C-A01B-D83B5BABC4BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A7UINet", "A7UINet\A7UINet.csproj", "{07830DCF-133E-4EAC-84F7-7881FC6B5CAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6160537F-C0E9-4F2C-A01B-D83B5BABC4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6160537F-C0E9-4F2C-A01B-D83B5BABC4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6160537F-C0E9-4F2C-A01B-D83B5BABC4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6160537F-C0E9-4F2C-A01B-D83B5BABC4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07830DCF-133E-4EAC-84F7-7881FC6B5CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07830DCF-133E-4EAC-84F7-7881FC6B5CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07830DCF-133E-4EAC-84F7-7881FC6B5CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07830DCF-133E-4EAC-84F7-7881FC6B5CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2ECC7D5-3729-4EAA-A206-68911EF04A75}
+	EndGlobalSection
+EndGlobal
