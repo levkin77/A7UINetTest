@@ -10,9 +10,10 @@ using System.Windows.Forms;
 
 namespace A7UINetTest
 {
-    public partial class Form1 : Form
+    // Главная форма с проверочными методами
+    public partial class FormMain : Form
     {
-        public Form1()
+        public FormMain()
         {
             InitializeComponent();
         }
