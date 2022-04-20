@@ -16,13 +16,24 @@ namespace A7UINetTest
         public FormMain()
         {
             InitializeComponent();
+            cmbConnection.SelectedIndex = 0;
+        }
+
+        string GetCurrentCnnString()
+        {
+            if(cmbConnection.SelectedIndex==0)
+                return "Integrated Security=True;Initial Catalog=Донецк7_рубль;Data Source=.";
+            else
+            {
+                return @"Integrated Security=True;Initial Catalog=Донецк7_рубль;Data Source=(LocalDb)\MSSQLLocalDB";
+            }
         }
         // Проверка отображения папок
         private void showFolders_Click(object sender, EventArgs e)
         {
             A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
             browser.ElementKind = A7UINet.ElementKinds.Folder;
-            browser.ConnectionString = "Integrated Security=True;Initial Catalog=Донецк7_рубль;Data Source=.";
+            browser.ConnectionString = GetCurrentCnnString();
             DialogResult res = browser.ShowTree();
             if (res == DialogResult.OK)
             {
@@ -36,7 +47,7 @@ namespace A7UINetTest
         {
             A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
             browser.ElementKind = A7UINet.ElementKinds.Product;
-            browser.ConnectionString = "Integrated Security=True;Initial Catalog=Донецк7_рубль;Data Source=.";
+            browser.ConnectionString = GetCurrentCnnString();
             DialogResult res = browser.ShowTree();
             if (res == DialogResult.OK)
             {
