@@ -16,7 +16,7 @@ namespace A7UINetTest
         {
             InitializeComponent();
         }
-
+        // Проверка отображения папок
         private void showFolders_Click(object sender, EventArgs e)
         {
             A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
@@ -30,7 +30,7 @@ namespace A7UINetTest
                 MessageBox.Show(browser.SelectedElementName.ToString());
             }
         }
-
+        // Проверка отображения товаров
         private void showProduct_Click(object sender, EventArgs e)
         {
             A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
