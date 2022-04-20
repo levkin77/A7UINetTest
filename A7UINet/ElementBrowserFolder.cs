@@ -27,27 +27,25 @@ namespace A7UINet
     }
     public class ElementBrowserFolder
     {
+        #region Свойства
+
         public ElementKinds ElementKind { get; set; }
         public int SelectedElementId { get; set; }
         public string SelectedElementName { get; set; }
         public dynamic SelectedObject { get; private set; }
 
         public string ConnectionString { get; set; }
+
+        #endregion
+
         public DialogResult ShowTree()
         {
             FormTreeFolder frm = new FormTreeFolder();
 
-            if (ElementKind == ElementKinds.Folder)
-            {
-                frm.treeView.ImageList = GreateImageListTo(ElementKind);
+            frm.treeView.ImageList = GreateImageListTo(ElementKind);
+            if(frm.treeView.ImageList.Images.Count==1)
                 frm.treeView.SelectedImageIndex = 0;
-            }
-            else if (ElementKind == ElementKinds.Product)
-            {
-                frm.treeView.ImageList = GreateImageListTo(ElementKind);
-                //frm.treeView.SelectedImageIndex = 0;
-            }
-
+            
             FillNodes(frm.treeView, null);
             frm.treeView.BeforeExpand += delegate(object sender, TreeViewCancelEventArgs eAgrExpand)
             {
@@ -75,45 +73,36 @@ namespace A7UINet
 
         private void FillNodes(TreeView view, TreeNode nodeTo)
         {
-            //root
-            if (nodeTo == null)
-            {
+            if(nodeTo==null)
                 view.Nodes.Clear();
-                var values = GetLevel(0);
-                foreach (var element in values.OrderBy(s => s.Name))
-                {
-                    TreeNode newNode = new TreeNode();
-                    newNode.Text = element.Name;
-                    newNode.Tag = element;
-                    view.Nodes.Add(newNode);
-                    if (ElementKind == ElementKinds.Product)
-                    {
-                        newNode.ImageIndex = element.Kind < 1000 ? element.Kind : element.Kind - 1000;
-                        newNode.SelectedImageIndex = newNode.ImageIndex;
-                    }
-                    if(element.Child>0)
-                        newNode.Nodes.Add("empty");
-                }
-            }
             else
             {
                 nodeTo.Nodes.Clear();
-                ElementValue currentElementValue = nodeTo.Tag as ElementValue;
-                var values = GetLevel(currentElementValue.Id);
-                foreach (var element in values.OrderBy(s=>s.Kind).ThenBy(s=>s.Name))
+            }
+            var values = GetLevel(nodeTo == null ? 0 : (nodeTo.Tag as ElementValue).Id);
+
+            var addTo = nodeTo == null ? view.Nodes : nodeTo.Nodes;
+
+
+            foreach (var element in values.OrderBy(s => s.Name))
+            {
+                TreeNode newNode = new TreeNode();
+                newNode.Text = element.Name;
+                newNode.Tag = element;
+                addTo.Add(newNode);
+                if (ElementKind == ElementKinds.Product)
                 {
-                    TreeNode newNode = new TreeNode();
-                    newNode.Text = element.Name;
-                    newNode.Tag = element;
-                    nodeTo.Nodes.Add(newNode);
-                    if (ElementKind == ElementKinds.Product)
-                    {
-                        newNode.ImageIndex = element.Kind < 1000 ? element.Kind : element.Kind - 1000;
-                        newNode.SelectedImageIndex = newNode.ImageIndex;
-                    }
-                    if (element.Child > 0)
-                        newNode.Nodes.Add("empty");
+                    newNode.ImageIndex = element.Kind < 1000 ? element.Kind : element.Kind - 1000;
+                    newNode.SelectedImageIndex = newNode.ImageIndex;
                 }
+                else if (ElementKind == ElementKinds.Agent)
+                {
+                    newNode.ImageIndex = element.Kind < 1000 ? element.Kind : element.Kind - 1000;
+                    newNode.SelectedImageIndex = newNode.ImageIndex;
+                }
+
+                if (element.Child > 0)
+                    newNode.Nodes.Add("empty");
             }
         }
         
@@ -149,30 +138,44 @@ namespace A7UINet
                             //$"select cast(v.FLD_ID as int) as Id, v.FLD_NAME as Name  from dbo.FOLDERS v inner join dbo.FLD_TREE t on t.ID = v.FLD_ID where t.SHORTCUT = 0 and t.p0 = {parentId}  order by v.FLD_NAME;";
                         }
                     }
-                    else if (ElementKind == ElementKinds.Product)
+                    else
                     {
+                        string prefix = string.Empty;
+                        string TREETABLE = string.Empty;
+                        string TABLENAME = string.Empty;
+
+                        if (ElementKind == ElementKinds.Product)
+                        {
+                            prefix = "ENT";
+                            TABLENAME = "ENTITIES";
+                        }
+                        else if (ElementKind == ElementKinds.Agent)
+                        {
+                            prefix = "AG";
+                            TABLENAME = "AGENTS";
+                        }
+                        TREETABLE = prefix + "_TREE";
+
                         if (parentId == 0)
                         {
-                            cmd.CommandText =
-                                ";with a as \n"
-                                + "( \n"
-                                + "select cast(v.ENT_ID as int) as Id, v.ENT_NAME as Name, v.ENT_TYPE as Kind \n"
-                                + "from dbo.ENTITIES v inner join dbo.ENT_TREE t on t.ID = v.ENT_ID where t.SHORTCUT = 0 and (t.P0 is null or t.p0 = 0)   \n"
+                            cmd.CommandText = ";with a as (\n"
+                                + $"select cast(v.{prefix}_ID as int) as Id, v.{prefix}_NAME as Name, v.{prefix}_TYPE as Kind \n"
+                                + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and (t.P0 is null or t.p0 = 0) \n"
                                 + ") \n"
-                                + "select a.Id,a.Name, (select count(*) from dbo.ENT_TREE where p0=a.Id) as HasChild, a.Kind from a order by a.name";
-
+                                + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a order by a.name";
                         }
                         else
                         {
                             cmd.CommandText =
-                                ";with a as \n"
-                                + "( \n"
-                                + "select cast(v.ENT_ID as int) as Id, v.ENT_NAME as Name, v.ENT_TYPE as Kind \n"
-                                + $"from dbo.ENTITIES v inner join dbo.ENT_TREE t on t.ID = v.ENT_ID where t.SHORTCUT = 0 and t.p0 = {parentId}   \n"
+                                ";with a as (\n"
+                                + $"select cast(v.{prefix}_ID as int) as Id, v.{prefix}_NAME as Name, v.{prefix}_TYPE as Kind \n"
+                                + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and t.p0 = {parentId}   \n"
                                 + ") \n"
-                                + "select a.Id,a.Name, (select count(*) from dbo.ENT_TREE where p0=a.Id) as HasChild, a.Kind from a order by a.name";
+                                + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a order by a.name";
+
                         }
                     }
+
                     cmd.Connection.Open();
                     var reader = cmd.ExecuteReader();
                     while(reader.Read())
@@ -181,7 +184,7 @@ namespace A7UINet
                         v.Id = reader.GetInt32(0);
                         v.Name = reader.GetString(1);
                         v.Child = reader.GetInt32(2);
-                        if (ElementKind == ElementKinds.Product)
+                        if (ElementKind == ElementKinds.Product | ElementKind == ElementKinds.Agent | ElementKind == ElementKinds.Misc | ElementKind == ElementKinds.Binder | ElementKind == ElementKinds.Template)
                         {
                             v.Kind = reader.GetInt16(3);
                         }
@@ -223,6 +226,19 @@ namespace A7UINet
                 list.Images.Add(Properties.Resources.entity_icon1017);
                 list.Images.Add(Properties.Resources.entity_icon1018);
             }
+            else if (kind == ElementKinds.Agent)
+            {
+            }
+            else if (kind == ElementKinds.Misc)
+            {
+            }
+            else if (kind == ElementKinds.Binder)
+            {
+            }
+            else if (kind == ElementKinds.Template)
+            {
+            }
+
             return list;
         }
     }
