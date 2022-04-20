@@ -22,10 +22,9 @@ namespace A7UINet
         public int Id { get; set; }
         public string Name { get; set; }
         public int Kind { get; set; }
-        public int Id2 { get; set; }
         public int Child { get; set; }
     }
-    public class ElementBrowserFolder
+    public class ElementBrowserTree
     {
         #region Свойства
 
@@ -70,21 +69,28 @@ namespace A7UINet
             return res;
         }
         
-
         private void FillNodes(TreeView view, TreeNode nodeTo)
         {
             if(nodeTo==null)
                 view.Nodes.Clear();
             else
-            {
                 nodeTo.Nodes.Clear();
-            }
+            
             var values = GetLevel(nodeTo == null ? 0 : (nodeTo.Tag as ElementValue).Id);
-
             var addTo = nodeTo == null ? view.Nodes : nodeTo.Nodes;
-
-
-            foreach (var element in values.OrderBy(s => s.Name))
+            
+            foreach (var element in values.OrderBy(s=>
+                     {
+                         if (ElementKind == ElementKinds.Agent)
+                         {
+                             if (s.Kind == 5) return -1;
+                             return s.Kind;
+                         }
+                         else
+                         {
+                             return s.Kind;
+                         }
+                     }).ThenBy(s => s.Name))
             {
                 TreeNode newNode = new TreeNode();
                 newNode.Text = element.Name;
@@ -92,14 +98,20 @@ namespace A7UINet
                 addTo.Add(newNode);
                 if (ElementKind == ElementKinds.Product)
                 {
-                    newNode.ImageIndex = element.Kind < 1000 ? element.Kind : element.Kind - 1000;
-                    newNode.SelectedImageIndex = newNode.ImageIndex;
+                    newNode.ImageKey = element.Kind.ToString();
+                    newNode.SelectedImageKey = element.Kind.ToString();
+                    //newNode.ImageIndex = element.Kind < 1001 ? element.Kind : element.Kind - 1000;
                 }
-                else if (ElementKind == ElementKinds.Agent)
+                else if (ElementKind == ElementKinds.Agent | ElementKind==ElementKinds.Binder
+                                                           | ElementKind == ElementKinds.Template)
                 {
-                    newNode.ImageIndex = element.Kind < 1000 ? element.Kind : element.Kind - 1000;
-                    newNode.SelectedImageIndex = newNode.ImageIndex;
+                    newNode.ImageIndex = element.Kind;
                 }
+                else if (ElementKind == ElementKinds.Misc)
+                {
+                    newNode.ImageIndex = element.Kind+1;
+                }
+                newNode.SelectedImageIndex = newNode.ImageIndex;
 
                 if (element.Child > 0)
                     newNode.Nodes.Add("empty");
@@ -123,7 +135,7 @@ namespace A7UINet
                                 + "select cast(v.FLD_ID as int) as Id, v.FLD_NAME as Name \n"
                                 + "from dbo.FOLDERS v inner join dbo.FLD_TREE t on t.ID = v.FLD_ID where t.SHORTCUT = 0 and (t.P0 is null or t.p0 = 0)   \n"
                                 + ") \n"
-                                + "select a.Id,a.Name, (select count(*) from dbo.FLD_TREE where p0=a.Id) as HasChild from a order by a.name";
+                                + "select a.Id,a.Name, (select count(*) from dbo.FLD_TREE where p0=a.Id) as HasChild, cast(0 as smallint) as Kind from a order by a.name";
 
                         }
                         else
@@ -134,8 +146,7 @@ namespace A7UINet
                                 + "select cast(v.FLD_ID as int) as Id, v.FLD_NAME as Name \n"
                                 + $"from dbo.FOLDERS v inner join dbo.FLD_TREE t on t.ID = v.FLD_ID where t.SHORTCUT = 0 and t.p0 = {parentId}   \n"
                                 + ") \n"
-                                + "select a.Id,a.Name, (select count(*) from dbo.FLD_TREE where p0=a.Id) as HasChild from a order by a.name";
-                            //$"select cast(v.FLD_ID as int) as Id, v.FLD_NAME as Name  from dbo.FOLDERS v inner join dbo.FLD_TREE t on t.ID = v.FLD_ID where t.SHORTCUT = 0 and t.p0 = {parentId}  order by v.FLD_NAME;";
+                                + "select a.Id,a.Name, (select count(*) from dbo.FLD_TREE where p0=a.Id) as HasChild, cast(0 as smallint) as Kind from a order by a.name";
                         }
                     }
                     else
@@ -154,15 +165,32 @@ namespace A7UINet
                             prefix = "AG";
                             TABLENAME = "AGENTS";
                         }
+                        else if (ElementKind == ElementKinds.Binder)
+                        {
+                            prefix = "BIND";
+                            TABLENAME = "BINDERS";
+                        }
+                        else if (ElementKind == ElementKinds.Template)
+                        {
+                            prefix = "TML";
+                            TABLENAME = "TEMPLATES";
+                        }
+                        
                         TREETABLE = prefix + "_TREE";
 
+                        if (ElementKind == ElementKinds.Misc)
+                        {
+                            prefix = "MSC";
+                            TABLENAME = "MISC";
+                            TREETABLE = "MISC_TREE";
+                        }
                         if (parentId == 0)
                         {
                             cmd.CommandText = ";with a as (\n"
                                 + $"select cast(v.{prefix}_ID as int) as Id, v.{prefix}_NAME as Name, v.{prefix}_TYPE as Kind \n"
                                 + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and (t.P0 is null or t.p0 = 0) \n"
                                 + ") \n"
-                                + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a order by a.name";
+                                + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a";
                         }
                         else
                         {
@@ -171,8 +199,7 @@ namespace A7UINet
                                 + $"select cast(v.{prefix}_ID as int) as Id, v.{prefix}_NAME as Name, v.{prefix}_TYPE as Kind \n"
                                 + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and t.p0 = {parentId}   \n"
                                 + ") \n"
-                                + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a order by a.name";
-
+                                + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a";
                         }
                     }
 
@@ -184,10 +211,7 @@ namespace A7UINet
                         v.Id = reader.GetInt32(0);
                         v.Name = reader.GetString(1);
                         v.Child = reader.GetInt32(2);
-                        if (ElementKind == ElementKinds.Product | ElementKind == ElementKinds.Agent | ElementKind == ElementKinds.Misc | ElementKind == ElementKinds.Binder | ElementKind == ElementKinds.Template)
-                        {
-                            v.Kind = reader.GetInt16(3);
-                        }
+                        v.Kind = reader.GetInt16(3);
                         coll.Add(v);
                     }
                 }
@@ -205,38 +229,51 @@ namespace A7UINet
             }
             else if (kind == ElementKinds.Product)
             {
-                list.Images.Add(Properties.Resources.entity_icon0);
-                list.Images.Add(Properties.Resources.entity_icon1);
-                list.Images.Add(Properties.Resources.entity_icon1001);
-                list.Images.Add(Properties.Resources.entity_icon1002);
-                list.Images.Add(Properties.Resources.entity_icon1003);
-                list.Images.Add(Properties.Resources.entity_icon1004);
-                list.Images.Add(Properties.Resources.entity_icon1005);
-                list.Images.Add(Properties.Resources.entity_icon1006);
-                list.Images.Add(Properties.Resources.entity_icon1007);
-                list.Images.Add(Properties.Resources.entity_icon1008);
-                list.Images.Add(Properties.Resources.entity_icon1009);
-                list.Images.Add(Properties.Resources.entity_icon1010);
-                list.Images.Add(Properties.Resources.entity_icon1011);
-                list.Images.Add(Properties.Resources.entity_icon1012);
-                list.Images.Add(Properties.Resources.entity_icon1013);
-                list.Images.Add(Properties.Resources.entity_icon1014);
-                list.Images.Add(Properties.Resources.entity_icon1015);
-                list.Images.Add(Properties.Resources.entity_icon1016);
-                list.Images.Add(Properties.Resources.entity_icon1017);
-                list.Images.Add(Properties.Resources.entity_icon1018);
+                list.Images.Add("0",Properties.Resources.entity_icon0);
+                list.Images.Add("1",Properties.Resources.entity_icon1);
+                list.Images.Add("1001",Properties.Resources.entity_icon1001);
+                list.Images.Add("1002", Properties.Resources.entity_icon1002);
+                list.Images.Add("1003", Properties.Resources.entity_icon1003);
+                list.Images.Add("1004", Properties.Resources.entity_icon1004);
+                list.Images.Add("1005", Properties.Resources.entity_icon1005);
+                list.Images.Add("1006", Properties.Resources.entity_icon1006);
+                list.Images.Add("1007", Properties.Resources.entity_icon1007);
+                list.Images.Add("1008", Properties.Resources.entity_icon1008);
+                list.Images.Add("1009", Properties.Resources.entity_icon1009);
+                list.Images.Add("1010", Properties.Resources.entity_icon1010);
+                list.Images.Add("1011", Properties.Resources.entity_icon1011);
+                list.Images.Add("1012", Properties.Resources.entity_icon1012);
+                list.Images.Add("1013", Properties.Resources.entity_icon1013);
+                list.Images.Add("1014", Properties.Resources.entity_icon1014);
+                list.Images.Add("1015", Properties.Resources.entity_icon1015);
+                list.Images.Add("1016", Properties.Resources.entity_icon1016);
+                list.Images.Add("1017", Properties.Resources.entity_icon1017);
+                list.Images.Add("1018", Properties.Resources.entity_icon1018);
             }
             else if (kind == ElementKinds.Agent)
             {
+                list.Images.Add(Properties.Resources.ag_icon0);
+                list.Images.Add(Properties.Resources.ag_icon1);
+                list.Images.Add(Properties.Resources.ag_icon2);
+                list.Images.Add(Properties.Resources.ag_icon3);
+                list.Images.Add(Properties.Resources.ag_icon4);
+                list.Images.Add(Properties.Resources.ag_icon5);
             }
             else if (kind == ElementKinds.Misc)
             {
+                list.Images.Add(Properties.Resources.misc_type16v2);
+                list.Images.Add(Properties.Resources.misc_fld16);
+                list.Images.Add(Properties.Resources.misc_icon16);
             }
             else if (kind == ElementKinds.Binder)
             {
+                list.Images.Add(Properties.Resources.binder_folder16);
+                list.Images.Add(Properties.Resources.binder_icon16);
             }
             else if (kind == ElementKinds.Template)
             {
+                list.Images.Add(Properties.Resources.template_fld16v2);
+                list.Images.Add(Properties.Resources.template_icon16v2);
             }
 
             return list;

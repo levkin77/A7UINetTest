@@ -29,56 +29,9 @@ namespace A7UINetTest
                 return @"Integrated Security=True;Initial Catalog=Донецк7_рубль;Data Source=(LocalDb)\MSSQLLocalDB";
             }
         }
-        // Проверка отображения папок
-        private void showFolders_Click(object sender, EventArgs e)
-        {
-            A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
-            browser.ElementKind = A7UINet.ElementKinds.Folder;
-            browser.ConnectionString = GetCurrentCnnString();
-            DialogResult res = browser.ShowTree();
-            if (res == DialogResult.OK)
-            {
-                //MessageBox.Show(res.ToString());
-                MessageBox.Show(browser.SelectedElementId.ToString());
-                MessageBox.Show(browser.SelectedElementName.ToString());
-            }
-        }
-        // Проверка отображения товаров
-        private void showProduct_Click(object sender, EventArgs e)
-        {
-            A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
-            browser.ElementKind = A7UINet.ElementKinds.Product;
-            browser.ConnectionString = GetCurrentCnnString();
-            DialogResult res = browser.ShowTree();
-            if (res == DialogResult.OK)
-            {
-                //MessageBox.Show(res.ToString());
-                MessageBox.Show($"Selected values SelectedElementId: {browser.SelectedElementId} SelectedElementName:{browser.SelectedElementName}");
-
-                var val = browser.SelectedObject.GetType().GetProperty("Name").GetValue(browser.SelectedObject, null);
-                MessageBox.Show($"Selected object {val}");
-
-            }
-        }
-
-        private void showAgents_Click(object sender, EventArgs e)
-        {
-            A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
-            browser.ElementKind = A7UINet.ElementKinds.Agent;
-            browser.ConnectionString = GetCurrentCnnString();
-            DialogResult res = browser.ShowTree();
-            if (res == DialogResult.OK)
-            {
-                //MessageBox.Show(res.ToString());
-                MessageBox.Show($"Selected values SelectedElementId: {browser.SelectedElementId} SelectedElementName:{browser.SelectedElementName}");
-
-                var val = browser.SelectedObject.GetType().GetProperty("Name").GetValue(browser.SelectedObject, null);
-                MessageBox.Show($"Selected object {val}");
-
-            }
-        }
-
-        private void ShowTreeBroser_Click(object sender, EventArgs e)
+        
+        // Проверка отображения дерева элементов
+        private void ShowTreeBrowser_Click(object sender, EventArgs e)
         {
             string key = (sender as Button).Tag.ToString();
             ElementKinds kind = A7UINet.ElementKinds.Agent;
@@ -104,19 +57,19 @@ namespace A7UINetTest
                     break;
             }
 
-            A7UINet.ElementBrowserFolder browser = new A7UINet.ElementBrowserFolder();
-            browser.ElementKind = kind;
-            browser.ConnectionString = GetCurrentCnnString();
-            DialogResult res = browser.ShowTree();
+            A7UINet.ElementBrowserTree browserTree = new A7UINet.ElementBrowserTree();
+            browserTree.ElementKind = kind;
+            browserTree.ConnectionString = GetCurrentCnnString();
+            DialogResult res = browserTree.ShowTree();
             if (res == DialogResult.OK)
             {
                 //MessageBox.Show(res.ToString());
-                MessageBox.Show($"Selected values SelectedElementId: {browser.SelectedElementId} SelectedElementName:{browser.SelectedElementName}");
+                MessageBox.Show($"Selected values SelectedElementId: {browserTree.SelectedElementId} SelectedElementName:{browserTree.SelectedElementName}");
 
-                if (browser.SelectedObject != null)
+                if (browserTree.SelectedObject != null)
                 {
-                    var val = browser.SelectedObject.GetType().GetProperty("Name")
-                        .GetValue(browser.SelectedObject, null);
+                    var val = browserTree.SelectedObject.GetType().GetProperty("Name")
+                        .GetValue(browserTree.SelectedObject, null);
                     MessageBox.Show($"Selected object {val}");
                 }
             }

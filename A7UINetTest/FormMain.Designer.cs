@@ -47,7 +47,7 @@ namespace A7UINetTest
             this.btnShowFolders.Tag = "folder";
             this.btnShowFolders.Text = "ShowFolders";
             this.btnShowFolders.UseVisualStyleBackColor = true;
-            this.btnShowFolders.Click += new System.EventHandler(this.ShowTreeBroser_Click);
+            this.btnShowFolders.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // btnShowProducts
             // 
@@ -58,7 +58,7 @@ namespace A7UINetTest
             this.btnShowProducts.Tag = "product";
             this.btnShowProducts.Text = "ShowProducts";
             this.btnShowProducts.UseVisualStyleBackColor = true;
-            this.btnShowProducts.Click += new System.EventHandler(this.ShowTreeBroser_Click);
+            this.btnShowProducts.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // cmbConnection
             // 
@@ -81,7 +81,7 @@ namespace A7UINetTest
             this.btnShowAgents.Tag = "agent";
             this.btnShowAgents.Text = "ShowAgents";
             this.btnShowAgents.UseVisualStyleBackColor = true;
-            this.btnShowAgents.Click += new System.EventHandler(this.ShowTreeBroser_Click);
+            this.btnShowAgents.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // btnShowMiscsTree
             // 
@@ -92,7 +92,7 @@ namespace A7UINetTest
             this.btnShowMiscsTree.Tag = "misc";
             this.btnShowMiscsTree.Text = "ShowMiscs";
             this.btnShowMiscsTree.UseVisualStyleBackColor = true;
-            this.btnShowMiscsTree.Click += new System.EventHandler(this.ShowTreeBroser_Click);
+            this.btnShowMiscsTree.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // btnShowTemplates
             // 
@@ -103,7 +103,7 @@ namespace A7UINetTest
             this.btnShowTemplates.Tag = "template";
             this.btnShowTemplates.Text = "ShowTemplates";
             this.btnShowTemplates.UseVisualStyleBackColor = true;
-            this.btnShowTemplates.Click += new System.EventHandler(this.ShowTreeBroser_Click);
+            this.btnShowTemplates.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // btnShowBinders
             // 
@@ -114,7 +114,7 @@ namespace A7UINetTest
             this.btnShowBinders.Tag = "binder";
             this.btnShowBinders.Text = "ShowBinders";
             this.btnShowBinders.UseVisualStyleBackColor = true;
-            this.btnShowBinders.Click += new System.EventHandler(this.ShowTreeBroser_Click);
+            this.btnShowBinders.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // FormMain
             // 
@@ -129,7 +129,7 @@ namespace A7UINetTest
             this.Controls.Add(this.btnShowProducts);
             this.Controls.Add(this.btnShowFolders);
             this.Name = "FormMain";
-            this.Text = "Form1";
+            this.Text = "Test A7UINet";
             this.ResumeLayout(false);
 
         }

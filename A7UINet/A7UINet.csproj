@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElementBrowserFolder.cs" />
+    <Compile Include="ElementBrowserTree.cs" />
     <Compile Include="FormTreeFolder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +129,51 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\entity_icon1018.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ag_icon0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ag_icon1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ag_icon2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ag_icon3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ag_icon4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ag_icon5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\binder_folder16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\binder_icon16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\template_fld16v2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\template_icon16v2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\misc_fld16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\misc_icon16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\misc_type16v2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\msc_iconag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\msc_iconent.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
