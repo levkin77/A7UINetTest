@@ -55,10 +55,14 @@ namespace A7UINetTest
                 case "binder":
                     kind = ElementKinds.Binder;
                     break;
+                case "account":
+                    kind = ElementKinds.Account;
+                    break;
             }
 
             A7UINet.ElementBrowserTree browserTree = new A7UINet.ElementBrowserTree();
             browserTree.ElementKind = kind;
+            browserTree.ShowOnlyFolder = chkOnlyFoldersTreeShow.Checked;
             browserTree.ConnectionString = GetCurrentCnnString();
             DialogResult res = browserTree.ShowTree();
             if (res == DialogResult.OK)

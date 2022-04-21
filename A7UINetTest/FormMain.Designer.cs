@@ -29,36 +29,40 @@ namespace A7UINetTest
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnShowFolders = new System.Windows.Forms.Button();
-            this.btnShowProducts = new System.Windows.Forms.Button();
+            this.btnShowTreeFolders = new System.Windows.Forms.Button();
+            this.btnShowTreeProducts = new System.Windows.Forms.Button();
             this.cmbConnection = new System.Windows.Forms.ComboBox();
-            this.btnShowAgents = new System.Windows.Forms.Button();
-            this.btnShowMiscsTree = new System.Windows.Forms.Button();
-            this.btnShowTemplates = new System.Windows.Forms.Button();
-            this.btnShowBinders = new System.Windows.Forms.Button();
+            this.btnShowTreeAgents = new System.Windows.Forms.Button();
+            this.btnShowTreeMiscs = new System.Windows.Forms.Button();
+            this.btnShowTreeTemplates = new System.Windows.Forms.Button();
+            this.btnShowTreeBinders = new System.Windows.Forms.Button();
+            this.chkOnlyFoldersTreeShow = new System.Windows.Forms.CheckBox();
+            this.groupBoxTree = new System.Windows.Forms.GroupBox();
+            this.btnShowTreeAccounts = new System.Windows.Forms.Button();
+            this.groupBoxTree.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnShowFolders
+            // btnShowTreeFolders
             // 
-            this.btnShowFolders.Location = new System.Drawing.Point(12, 54);
-            this.btnShowFolders.Name = "btnShowFolders";
-            this.btnShowFolders.Size = new System.Drawing.Size(75, 23);
-            this.btnShowFolders.TabIndex = 0;
-            this.btnShowFolders.Tag = "folder";
-            this.btnShowFolders.Text = "ShowFolders";
-            this.btnShowFolders.UseVisualStyleBackColor = true;
-            this.btnShowFolders.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
+            this.btnShowTreeFolders.Location = new System.Drawing.Point(6, 42);
+            this.btnShowTreeFolders.Name = "btnShowTreeFolders";
+            this.btnShowTreeFolders.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeFolders.TabIndex = 0;
+            this.btnShowTreeFolders.Tag = "folder";
+            this.btnShowTreeFolders.Text = "ShowFolders";
+            this.btnShowTreeFolders.UseVisualStyleBackColor = true;
+            this.btnShowTreeFolders.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
-            // btnShowProducts
+            // btnShowTreeProducts
             // 
-            this.btnShowProducts.Location = new System.Drawing.Point(12, 83);
-            this.btnShowProducts.Name = "btnShowProducts";
-            this.btnShowProducts.Size = new System.Drawing.Size(75, 23);
-            this.btnShowProducts.TabIndex = 0;
-            this.btnShowProducts.Tag = "product";
-            this.btnShowProducts.Text = "ShowProducts";
-            this.btnShowProducts.UseVisualStyleBackColor = true;
-            this.btnShowProducts.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
+            this.btnShowTreeProducts.Location = new System.Drawing.Point(87, 42);
+            this.btnShowTreeProducts.Name = "btnShowTreeProducts";
+            this.btnShowTreeProducts.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeProducts.TabIndex = 0;
+            this.btnShowTreeProducts.Tag = "product";
+            this.btnShowTreeProducts.Text = "ShowProducts";
+            this.btnShowTreeProducts.UseVisualStyleBackColor = true;
+            this.btnShowTreeProducts.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // cmbConnection
             // 
@@ -72,77 +76,115 @@ namespace A7UINetTest
             this.cmbConnection.Size = new System.Drawing.Size(258, 21);
             this.cmbConnection.TabIndex = 1;
             // 
-            // btnShowAgents
+            // btnShowTreeAgents
             // 
-            this.btnShowAgents.Location = new System.Drawing.Point(12, 112);
-            this.btnShowAgents.Name = "btnShowAgents";
-            this.btnShowAgents.Size = new System.Drawing.Size(75, 23);
-            this.btnShowAgents.TabIndex = 0;
-            this.btnShowAgents.Tag = "agent";
-            this.btnShowAgents.Text = "ShowAgents";
-            this.btnShowAgents.UseVisualStyleBackColor = true;
-            this.btnShowAgents.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
+            this.btnShowTreeAgents.Location = new System.Drawing.Point(6, 71);
+            this.btnShowTreeAgents.Name = "btnShowTreeAgents";
+            this.btnShowTreeAgents.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeAgents.TabIndex = 0;
+            this.btnShowTreeAgents.Tag = "agent";
+            this.btnShowTreeAgents.Text = "ShowAgents";
+            this.btnShowTreeAgents.UseVisualStyleBackColor = true;
+            this.btnShowTreeAgents.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
-            // btnShowMiscsTree
+            // btnShowTreeMiscs
             // 
-            this.btnShowMiscsTree.Location = new System.Drawing.Point(12, 141);
-            this.btnShowMiscsTree.Name = "btnShowMiscsTree";
-            this.btnShowMiscsTree.Size = new System.Drawing.Size(75, 23);
-            this.btnShowMiscsTree.TabIndex = 0;
-            this.btnShowMiscsTree.Tag = "misc";
-            this.btnShowMiscsTree.Text = "ShowMiscs";
-            this.btnShowMiscsTree.UseVisualStyleBackColor = true;
-            this.btnShowMiscsTree.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
+            this.btnShowTreeMiscs.Location = new System.Drawing.Point(87, 71);
+            this.btnShowTreeMiscs.Name = "btnShowTreeMiscs";
+            this.btnShowTreeMiscs.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeMiscs.TabIndex = 0;
+            this.btnShowTreeMiscs.Tag = "misc";
+            this.btnShowTreeMiscs.Text = "ShowMiscs";
+            this.btnShowTreeMiscs.UseVisualStyleBackColor = true;
+            this.btnShowTreeMiscs.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
-            // btnShowTemplates
+            // btnShowTreeTemplates
             // 
-            this.btnShowTemplates.Location = new System.Drawing.Point(12, 170);
-            this.btnShowTemplates.Name = "btnShowTemplates";
-            this.btnShowTemplates.Size = new System.Drawing.Size(75, 23);
-            this.btnShowTemplates.TabIndex = 0;
-            this.btnShowTemplates.Tag = "template";
-            this.btnShowTemplates.Text = "ShowTemplates";
-            this.btnShowTemplates.UseVisualStyleBackColor = true;
-            this.btnShowTemplates.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
+            this.btnShowTreeTemplates.Location = new System.Drawing.Point(6, 100);
+            this.btnShowTreeTemplates.Name = "btnShowTreeTemplates";
+            this.btnShowTreeTemplates.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeTemplates.TabIndex = 0;
+            this.btnShowTreeTemplates.Tag = "template";
+            this.btnShowTreeTemplates.Text = "ShowTemplates";
+            this.btnShowTreeTemplates.UseVisualStyleBackColor = true;
+            this.btnShowTreeTemplates.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
-            // btnShowBinders
+            // btnShowTreeBinders
             // 
-            this.btnShowBinders.Location = new System.Drawing.Point(12, 199);
-            this.btnShowBinders.Name = "btnShowBinders";
-            this.btnShowBinders.Size = new System.Drawing.Size(75, 23);
-            this.btnShowBinders.TabIndex = 0;
-            this.btnShowBinders.Tag = "binder";
-            this.btnShowBinders.Text = "ShowBinders";
-            this.btnShowBinders.UseVisualStyleBackColor = true;
-            this.btnShowBinders.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
+            this.btnShowTreeBinders.Location = new System.Drawing.Point(87, 100);
+            this.btnShowTreeBinders.Name = "btnShowTreeBinders";
+            this.btnShowTreeBinders.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeBinders.TabIndex = 0;
+            this.btnShowTreeBinders.Tag = "binder";
+            this.btnShowTreeBinders.Text = "ShowBinders";
+            this.btnShowTreeBinders.UseVisualStyleBackColor = true;
+            this.btnShowTreeBinders.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
+            // 
+            // chkOnlyFoldersTreeShow
+            // 
+            this.chkOnlyFoldersTreeShow.AutoSize = true;
+            this.chkOnlyFoldersTreeShow.Location = new System.Drawing.Point(6, 19);
+            this.chkOnlyFoldersTreeShow.Name = "chkOnlyFoldersTreeShow";
+            this.chkOnlyFoldersTreeShow.Size = new System.Drawing.Size(160, 17);
+            this.chkOnlyFoldersTreeShow.TabIndex = 2;
+            this.chkOnlyFoldersTreeShow.Text = "Показывать только папки";
+            this.chkOnlyFoldersTreeShow.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxTree
+            // 
+            this.groupBoxTree.Controls.Add(this.chkOnlyFoldersTreeShow);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeFolders);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeBinders);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeProducts);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeAccounts);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeTemplates);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeAgents);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeMiscs);
+            this.groupBoxTree.Location = new System.Drawing.Point(12, 40);
+            this.groupBoxTree.Name = "groupBoxTree";
+            this.groupBoxTree.Size = new System.Drawing.Size(313, 226);
+            this.groupBoxTree.TabIndex = 3;
+            this.groupBoxTree.TabStop = false;
+            this.groupBoxTree.Text = "Выбор элемента из дерева";
+            // 
+            // btnShowTreeAccounts
+            // 
+            this.btnShowTreeAccounts.Location = new System.Drawing.Point(6, 129);
+            this.btnShowTreeAccounts.Name = "btnShowTreeAccounts";
+            this.btnShowTreeAccounts.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeAccounts.TabIndex = 0;
+            this.btnShowTreeAccounts.Tag = "account";
+            this.btnShowTreeAccounts.Text = "ShowAccounts";
+            this.btnShowTreeAccounts.UseVisualStyleBackColor = true;
+            this.btnShowTreeAccounts.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.groupBoxTree);
             this.Controls.Add(this.cmbConnection);
-            this.Controls.Add(this.btnShowBinders);
-            this.Controls.Add(this.btnShowTemplates);
-            this.Controls.Add(this.btnShowMiscsTree);
-            this.Controls.Add(this.btnShowAgents);
-            this.Controls.Add(this.btnShowProducts);
-            this.Controls.Add(this.btnShowFolders);
             this.Name = "FormMain";
             this.Text = "Test A7UINet";
+            this.groupBoxTree.ResumeLayout(false);
+            this.groupBoxTree.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnShowFolders;
-        private System.Windows.Forms.Button btnShowProducts;
+        private System.Windows.Forms.Button btnShowTreeFolders;
+        private System.Windows.Forms.Button btnShowTreeProducts;
         private System.Windows.Forms.ComboBox cmbConnection;
-        private System.Windows.Forms.Button btnShowAgents;
-        private System.Windows.Forms.Button btnShowMiscsTree;
-        private System.Windows.Forms.Button btnShowTemplates;
-        private System.Windows.Forms.Button btnShowBinders;
+        private System.Windows.Forms.Button btnShowTreeAgents;
+        private System.Windows.Forms.Button btnShowTreeMiscs;
+        private System.Windows.Forms.Button btnShowTreeTemplates;
+        private System.Windows.Forms.Button btnShowTreeBinders;
+        private System.Windows.Forms.CheckBox chkOnlyFoldersTreeShow;
+        private System.Windows.Forms.GroupBox groupBoxTree;
+        private System.Windows.Forms.Button btnShowTreeAccounts;
     }
 }
 

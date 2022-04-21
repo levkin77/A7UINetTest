@@ -15,7 +15,8 @@ namespace A7UINet
         Agent,
         Misc,
         Binder,
-        Template
+        Template,
+        Account
     }
     internal class ElementValue
     {
@@ -34,6 +35,10 @@ namespace A7UINet
         public dynamic SelectedObject { get; private set; }
 
         public string ConnectionString { get; set; }
+        /// <summary>
+        /// Отображать только папки
+        /// </summary>
+        public bool ShowOnlyFolder { get; set; }
 
         #endregion
 
@@ -96,22 +101,20 @@ namespace A7UINet
                 newNode.Text = element.Name;
                 newNode.Tag = element;
                 addTo.Add(newNode);
-                if (ElementKind == ElementKinds.Product)
+                if (ElementKind == ElementKinds.Product | ElementKind==ElementKinds.Account )
                 {
-                    newNode.ImageKey = element.Kind.ToString();
-                    newNode.SelectedImageKey = element.Kind.ToString();
+                    newNode.ImageKey = (element.Kind).ToString();
+                    newNode.SelectedImageKey = newNode.ImageKey;
                     //newNode.ImageIndex = element.Kind < 1001 ? element.Kind : element.Kind - 1000;
                 }
                 else if (ElementKind == ElementKinds.Agent | ElementKind==ElementKinds.Binder
-                                                           | ElementKind == ElementKinds.Template)
+                                                           | ElementKind == ElementKinds.Template
+                                                           | ElementKind== ElementKinds.Misc)
                 {
-                    newNode.ImageIndex = element.Kind;
+                    newNode.ImageKey = element.Kind.ToString();
+                    newNode.SelectedImageKey = newNode.ImageKey;
                 }
-                else if (ElementKind == ElementKinds.Misc)
-                {
-                    newNode.ImageIndex = element.Kind+1;
-                }
-                newNode.SelectedImageIndex = newNode.ImageIndex;
+                //newNode.SelectedImageIndex = newNode.ImageIndex;
 
                 if (element.Child > 0)
                     newNode.Nodes.Add("empty");
@@ -149,21 +152,54 @@ namespace A7UINet
                                 + "select a.Id,a.Name, (select count(*) from dbo.FLD_TREE where p0=a.Id) as HasChild, cast(0 as smallint) as Kind from a order by a.name";
                         }
                     }
+                    else if (ElementKind == ElementKinds.Account)
+                    {
+                        if (parentId == 0)
+                        {
+                            cmd.CommandText =
+                                ";with a as \n"
+                                + "( \n"
+                                + "select cast(v.ACC_ID as int) as Id, concat_ws(' ', v.ACC_CODE, v.ACC_NAME) as Name, v.ACC_TYPE as Kind \n"
+                                + "from dbo.ACCOUNTS v inner join dbo.ACC_TREE t on t.ID = v.ACC_ID where t.SHORTCUT = 0 and (t.P0 is null or t.p0 = 0)   \n"
+                                + ") \n"
+                                + "select a.Id,a.Name, (select count(*) from dbo.ACC_TREE where p0=a.Id) as HasChild, a.Kind from a order by a.name";
+
+                        }
+                        else
+                        {
+                            cmd.CommandText =
+                                ";with a as \n"
+                                + "( \n"
+                                + "select cast(v.ACC_ID as int) as Id, concat_ws(' ', v.ACC_CODE, v.ACC_NAME) as Name, v.ACC_TYPE as Kind \n"
+                                + $"from dbo.ACCOUNTS v inner join dbo.ACC_TREE t on t.ID = v.ACC_ID where t.SHORTCUT = 0 and t.p0 = {parentId}   \n"
+                                + ") \n"
+                                + "select a.Id,a.Name, (select count(*) from dbo.ACC_TREE where p0=a.Id) as HasChild, a. Kind from a order by a.name";
+                        }
+                    }
                     else
                     {
                         string prefix = string.Empty;
                         string TREETABLE = string.Empty;
                         string TABLENAME = string.Empty;
+                        string WHEREADD = string.Empty;
 
                         if (ElementKind == ElementKinds.Product)
                         {
                             prefix = "ENT";
                             TABLENAME = "ENTITIES";
+                            if (ShowOnlyFolder)
+                            {
+                                WHEREADD = " and v.ENT_TYPE in (0,1)";
+                            }
                         }
                         else if (ElementKind == ElementKinds.Agent)
                         {
                             prefix = "AG";
                             TABLENAME = "AGENTS";
+                            if (ShowOnlyFolder)
+                            {
+                                WHEREADD = " and v.AG_TYPE=0";
+                            }
                         }
                         else if (ElementKind == ElementKinds.Binder)
                         {
@@ -188,7 +224,7 @@ namespace A7UINet
                         {
                             cmd.CommandText = ";with a as (\n"
                                 + $"select cast(v.{prefix}_ID as int) as Id, v.{prefix}_NAME as Name, v.{prefix}_TYPE as Kind \n"
-                                + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and (t.P0 is null or t.p0 = 0) \n"
+                                + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and (t.P0 is null or t.p0 = 0) {WHEREADD} \n"
                                 + ") \n"
                                 + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a";
                         }
@@ -197,7 +233,7 @@ namespace A7UINet
                             cmd.CommandText =
                                 ";with a as (\n"
                                 + $"select cast(v.{prefix}_ID as int) as Id, v.{prefix}_NAME as Name, v.{prefix}_TYPE as Kind \n"
-                                + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and t.p0 = {parentId}   \n"
+                                + $"from dbo.{TABLENAME} v inner join dbo.{TREETABLE} t on t.ID = v.{prefix}_ID where t.SHORTCUT = 0 and t.p0 = {parentId} {WHEREADD}   \n"
                                 + ") \n"
                                 + $"select a.Id,a.Name, (select count(*) from dbo.{TREETABLE} where p0=a.Id) as HasChild, a.Kind from a";
                         }
@@ -252,28 +288,37 @@ namespace A7UINet
             }
             else if (kind == ElementKinds.Agent)
             {
-                list.Images.Add(Properties.Resources.ag_icon0);
-                list.Images.Add(Properties.Resources.ag_icon1);
-                list.Images.Add(Properties.Resources.ag_icon2);
-                list.Images.Add(Properties.Resources.ag_icon3);
-                list.Images.Add(Properties.Resources.ag_icon4);
-                list.Images.Add(Properties.Resources.ag_icon5);
+                list.Images.Add("0",Properties.Resources.ag_icon0);
+                list.Images.Add("1", Properties.Resources.ag_icon1);
+                list.Images.Add("2", Properties.Resources.ag_icon2);
+                list.Images.Add("3", Properties.Resources.ag_icon3);
+                list.Images.Add("4", Properties.Resources.ag_icon4);
+                list.Images.Add("5", Properties.Resources.ag_icon5);
             }
             else if (kind == ElementKinds.Misc)
             {
-                list.Images.Add(Properties.Resources.misc_type16v2);
-                list.Images.Add(Properties.Resources.misc_fld16);
-                list.Images.Add(Properties.Resources.misc_icon16);
+                list.Images.Add("-1",Properties.Resources.misc_type16v2);
+                list.Images.Add("0",Properties.Resources.misc_fld16);
+                list.Images.Add("1",Properties.Resources.misc_icon16);
             }
             else if (kind == ElementKinds.Binder)
             {
-                list.Images.Add(Properties.Resources.binder_folder16);
-                list.Images.Add(Properties.Resources.binder_icon16);
+                list.Images.Add("0",Properties.Resources.binder_folder16);
+                list.Images.Add("1",Properties.Resources.binder_icon16);
             }
             else if (kind == ElementKinds.Template)
             {
-                list.Images.Add(Properties.Resources.template_fld16v2);
-                list.Images.Add(Properties.Resources.template_icon16v2);
+                list.Images.Add("0",Properties.Resources.template_fld16v2);
+                list.Images.Add("1",Properties.Resources.template_icon16v2);
+            }
+            else if (kind == ElementKinds.Account)
+            {
+                list.Images.Add("1",Properties.Resources.acc_icon0);
+                list.Images.Add("1",Properties.Resources.acc_icon1);
+                list.Images.Add("1",Properties.Resources.acc_icon2);
+                list.Images.Add("1",Properties.Resources.acc_icon3);
+                list.Images.Add("-1",Properties.Resources.acc_iconp);
+                list.Images.Add("-2",Properties.Resources.acc_iconz);
             }
 
             return list;

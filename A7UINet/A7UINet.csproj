@@ -175,5 +175,23 @@
   <ItemGroup>
     <None Include="Resources\msc_iconent.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\acc_icon0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\acc_icon1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\acc_icon2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\acc_icon3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\acc_iconp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\acc_iconz.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
