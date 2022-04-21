@@ -38,7 +38,7 @@ namespace A7UINet
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(409, 475);
+            this.btnOK.Location = new System.Drawing.Point(416, 576);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -49,7 +49,7 @@ namespace A7UINet
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(490, 475);
+            this.btnCancel.Location = new System.Drawing.Point(497, 576);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 0;
@@ -63,7 +63,7 @@ namespace A7UINet
             | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView.Location = new System.Drawing.Point(13, 12);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(552, 457);
+            this.treeView.Size = new System.Drawing.Size(559, 558);
             this.treeView.TabIndex = 1;
             // 
             // FormTreeFolder
@@ -72,12 +72,13 @@ namespace A7UINet
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(577, 510);
+            this.ClientSize = new System.Drawing.Size(584, 611);
             this.Controls.Add(this.treeView);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "FormTreeFolder";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
