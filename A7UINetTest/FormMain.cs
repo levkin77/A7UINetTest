@@ -78,5 +78,29 @@ namespace A7UINetTest
                 }
             }
         }
+
+        private void ActionCheckColl_Click(object sender, EventArgs e)
+        {
+            string key = (sender as Button).Tag.ToString();
+
+            A7UINet.WA wa = new A7UINet.WA();  
+            wa.ConnectionString = GetCurrentCnnString();
+            if (key == "pricelist")
+            {
+                var coll = wa.GetPriceLists();
+                foreach (var item in coll)
+                {
+                    Console.WriteLine($"PriceList item: id {item.Id}| guid {item.Guid}| name {item.Name}| memo {item.Memo}| ismain {item.IsMain}|");
+                }
+            }
+            else if (key == "pricename")
+            {
+                var coll = wa.GetPriceNames();
+                foreach (var item in coll)
+                {
+                    Console.WriteLine($"PriceName item: id {item.Id}| guid {item.Guid}| name {item.Name}| memo {item.Memo}| formula {item.Formula}|");
+                }
+            }
+        }
     }
 }

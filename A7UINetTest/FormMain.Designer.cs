@@ -39,7 +39,11 @@ namespace A7UINetTest
             this.chkOnlyFoldersTreeShow = new System.Windows.Forms.CheckBox();
             this.groupBoxTree = new System.Windows.Forms.GroupBox();
             this.btnShowTreeAccounts = new System.Windows.Forms.Button();
+            this.groupBoxWA = new System.Windows.Forms.GroupBox();
+            this.btnPriceList = new System.Windows.Forms.Button();
+            this.PriceNameColl = new System.Windows.Forms.Button();
             this.groupBoxTree.SuspendLayout();
+            this.groupBoxWA.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnShowTreeFolders
@@ -142,7 +146,7 @@ namespace A7UINetTest
             this.groupBoxTree.Controls.Add(this.btnShowTreeMiscs);
             this.groupBoxTree.Location = new System.Drawing.Point(12, 40);
             this.groupBoxTree.Name = "groupBoxTree";
-            this.groupBoxTree.Size = new System.Drawing.Size(313, 226);
+            this.groupBoxTree.Size = new System.Drawing.Size(184, 166);
             this.groupBoxTree.TabIndex = 3;
             this.groupBoxTree.TabStop = false;
             this.groupBoxTree.Text = "Выбор элемента из дерева";
@@ -158,17 +162,52 @@ namespace A7UINetTest
             this.btnShowTreeAccounts.UseVisualStyleBackColor = true;
             this.btnShowTreeAccounts.Click += new System.EventHandler(this.ShowTreeBrowser_Click);
             // 
+            // groupBoxWA
+            // 
+            this.groupBoxWA.Controls.Add(this.btnPriceList);
+            this.groupBoxWA.Controls.Add(this.PriceNameColl);
+            this.groupBoxWA.Location = new System.Drawing.Point(203, 41);
+            this.groupBoxWA.Name = "groupBoxWA";
+            this.groupBoxWA.Size = new System.Drawing.Size(200, 165);
+            this.groupBoxWA.TabIndex = 4;
+            this.groupBoxWA.TabStop = false;
+            this.groupBoxWA.Text = "Проверка коллекций";
+            // 
+            // btnPriceList
+            // 
+            this.btnPriceList.Location = new System.Drawing.Point(7, 49);
+            this.btnPriceList.Name = "btnPriceList";
+            this.btnPriceList.Size = new System.Drawing.Size(84, 23);
+            this.btnPriceList.TabIndex = 0;
+            this.btnPriceList.Tag = "pricelist";
+            this.btnPriceList.Text = "PriceListColl";
+            this.btnPriceList.UseVisualStyleBackColor = true;
+            this.btnPriceList.Click += new System.EventHandler(this.ActionCheckColl_Click);
+            // 
+            // PriceNameColl
+            // 
+            this.PriceNameColl.Location = new System.Drawing.Point(7, 20);
+            this.PriceNameColl.Name = "PriceNameColl";
+            this.PriceNameColl.Size = new System.Drawing.Size(84, 23);
+            this.PriceNameColl.TabIndex = 0;
+            this.PriceNameColl.Tag = "pricename";
+            this.PriceNameColl.Text = "btnPriceName";
+            this.PriceNameColl.UseVisualStyleBackColor = true;
+            this.PriceNameColl.Click += new System.EventHandler(this.ActionCheckColl_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.groupBoxWA);
             this.Controls.Add(this.groupBoxTree);
             this.Controls.Add(this.cmbConnection);
             this.Name = "FormMain";
             this.Text = "Test A7UINet";
             this.groupBoxTree.ResumeLayout(false);
             this.groupBoxTree.PerformLayout();
+            this.groupBoxWA.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -185,6 +224,9 @@ namespace A7UINetTest
         private System.Windows.Forms.CheckBox chkOnlyFoldersTreeShow;
         private System.Windows.Forms.GroupBox groupBoxTree;
         private System.Windows.Forms.Button btnShowTreeAccounts;
+        private System.Windows.Forms.GroupBox groupBoxWA;
+        private System.Windows.Forms.Button btnPriceList;
+        private System.Windows.Forms.Button PriceNameColl;
     }
 }
 
