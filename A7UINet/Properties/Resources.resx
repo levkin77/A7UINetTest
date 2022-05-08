@@ -160,6 +160,12 @@
   <data name="binder_icon16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\binder_icon16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="dialog_x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dialog_x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dollar_x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dollar_x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="entity_icon0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\entity_icon0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -223,6 +229,9 @@
   <data name="FOLDERYELOW16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FOLDERYELOW16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="form_X16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\form_X16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="misc_fld16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\misc_fld16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -232,16 +241,37 @@
   <data name="misc_type16v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\misc_type16v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="module_x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\module_x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="module_X16V2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\module_X16V2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="msc_iconag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\msc_iconag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="msc_iconent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\msc_iconent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="numerical_x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\numerical_x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pricelist_x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pricelist_x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pricename_x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pricename_x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="table_X16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\table_X16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="template_fld16v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\template_fld16v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="template_icon16v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\template_icon16v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="unit_x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\unit_x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

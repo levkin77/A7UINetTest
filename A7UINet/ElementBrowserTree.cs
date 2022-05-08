@@ -16,9 +16,15 @@ namespace A7UINet
         Misc,
         Binder,
         Template,
-        Account
+        Account,
+        ProjectItem,
+        Autonum,
+        PriceList,
+        PriceName,
+        Currency,
+        Unit
     }
-    internal class ElementValue
+    public class ElementValue
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -61,6 +67,14 @@ namespace A7UINet
                     }
                 }
             };//TreeView_BeforeExpand;
+            frm.treeView.NodeMouseDoubleClick += delegate(object sender, TreeNodeMouseClickEventArgs e)
+            {
+                if (e.Node.Nodes.Count == 0)
+                {
+                    frm.DialogResult = DialogResult.OK;
+                    frm.Close();
+                }
+            };
             var res = frm.ShowDialog();
             SelectedElementId = 0;
             SelectedElementName = String.Empty;
@@ -73,7 +87,9 @@ namespace A7UINet
             }
             return res;
         }
+
         
+
         private void FillNodes(TreeView view, TreeNode nodeTo)
         {
             if(nodeTo==null)
@@ -121,7 +137,7 @@ namespace A7UINet
             }
         }
         
-        private List<ElementValue> GetLevel(int parentId)
+        protected virtual List<ElementValue> GetLevel(int parentId)
         {
             List<ElementValue> coll = new List<ElementValue>();
             using (var cnn  =new SqlConnection(ConnectionString))
@@ -205,11 +221,19 @@ namespace A7UINet
                         {
                             prefix = "BIND";
                             TABLENAME = "BINDERS";
+                            if (ShowOnlyFolder)
+                            {
+                                WHEREADD = " and v.BIND_TYPE = 0";
+                            }
                         }
                         else if (ElementKind == ElementKinds.Template)
                         {
                             prefix = "TML";
                             TABLENAME = "TEMPLATES";
+                            if (ShowOnlyFolder)
+                            {
+                                WHEREADD = " and v.TML_TYPE = 0";
+                            }
                         }
                         
                         TREETABLE = prefix + "_TREE";
@@ -219,6 +243,10 @@ namespace A7UINet
                             prefix = "MSC";
                             TABLENAME = "MISC";
                             TREETABLE = "MISC_TREE";
+                            if (ShowOnlyFolder)
+                            {
+                                WHEREADD = " and v.MSC_TYPE in(0,-1)";
+                            }
                         }
                         if (parentId == 0)
                         {
@@ -319,6 +347,637 @@ namespace A7UINet
                 list.Images.Add("1",Properties.Resources.acc_icon3);
                 list.Images.Add("-1",Properties.Resources.acc_iconp);
                 list.Images.Add("-2",Properties.Resources.acc_iconz);
+            }
+
+            return list;
+        }
+    }
+
+    public class ElementBrowserTreeProjectItems
+    {
+        /// <summary>
+        /// Идентификатор выбранного элемента
+        /// </summary>
+        public int SelectedElementId { get; set; }
+        /// <summary>
+        /// Выбранное наименование
+        /// </summary>
+        public string SelectedElementName { get; set; }
+        /// <summary>
+        /// Выбранный объект
+        /// </summary>
+        public dynamic SelectedObject { get; private set; }
+        /// <summary>
+        /// Строка соединения
+        /// </summary>
+        public string ConnectionString { get; set; }
+
+        public DialogResult ShowTree()
+        {
+            FormTreeFolder frm = new FormTreeFolder();
+
+            frm.treeView.ImageList = GreateImageListTo(ElementKinds.ProjectItem);
+            if (frm.treeView.ImageList.Images.Count == 1)
+                frm.treeView.SelectedImageIndex = 0;
+
+            FillRootNodes(frm.treeView);            
+            frm.treeView.NodeMouseDoubleClick += delegate (object sender, TreeNodeMouseClickEventArgs e)
+            {
+                frm.treeView.SelectedNode = e.Node;
+                if (e.Node.Nodes.Count == 0)
+                {
+                    if (e.Node != null & (e.Node.Tag as ElementValue) != null)
+                    {
+                        frm.DialogResult = DialogResult.OK;
+                        frm.Close();
+                    }
+                }
+            };
+            frm.FormClosing += delegate(object sender, FormClosingEventArgs e)
+            {
+                if (frm.DialogResult == DialogResult.Cancel) return;
+                if(frm.treeView.SelectedNode==null)
+                    e.Cancel = true;
+                else if((frm.treeView.SelectedNode.Tag as ElementValue)==null)
+                    e.Cancel=true;
+            };
+            var res = frm.ShowDialog();
+            SelectedElementId = 0;
+            SelectedElementName = string.Empty;
+            if (frm.treeView.SelectedNode != null)
+            {
+                var objSelected = frm.treeView.SelectedNode.Tag as ElementValue;
+                if (objSelected != null)
+                {
+                    SelectedElementId = objSelected.Id;
+                    SelectedElementName = objSelected.Name;
+                }
+                SelectedObject = objSelected;
+            }
+            return res;
+        }
+
+        
+
+        private void FillRootNodes(TreeView view)
+        {
+            /*
+0	Форма
+1	Диалог
+2	Электронная таблица
+3	Модуль
+100	Модуль рабочей области
+             */
+            
+            var list = GetLevel();
+            if (list.Any(s => s.Kind == 0))
+            {
+                var node = view.Nodes.Add("Формы");
+                node.ImageKey = "f";
+                foreach (var element in list.Where(s => s.Kind == 0))
+                {
+                    TreeNode newNode = new TreeNode();
+                    newNode.Text = element.Name;
+                    newNode.Tag = element;
+                    newNode.ImageKey = "0";
+                    newNode.SelectedImageKey = newNode.ImageKey;
+                    node.Nodes.Add(newNode);
+                }
+            }
+
+            if (list.Any(s => s.Kind == 1))
+            {
+                var node = view.Nodes.Add("Диалоги");
+                node.ImageKey = "f";
+                foreach (var element in list.Where(s => s.Kind == 1))
+                {
+                    TreeNode newNode = new TreeNode();
+                    newNode.Text = element.Name;
+                    newNode.Tag = element;
+                    newNode.ImageKey = "1";
+                    newNode.SelectedImageKey = newNode.ImageKey;
+                    node.Nodes.Add(newNode);
+                }
+            }
+            if (list.Any(s => s.Kind == 2))
+            {
+                var node = view.Nodes.Add("Электронная таблица");
+                node.ImageKey = "f";
+                foreach (var element in list.Where(s => s.Kind == 2))
+                {
+                    TreeNode newNode = new TreeNode();
+                    newNode.Text = element.Name;
+                    newNode.Tag = element;
+                    newNode.ImageKey = "2";
+                    newNode.SelectedImageKey = newNode.ImageKey;
+                    node.Nodes.Add(newNode);
+                }
+            }
+
+            if (list.Any(s => s.Kind == 3))
+            {
+                var node = view.Nodes.Add("Модули");
+                node.ImageKey = "f";
+                foreach (var element in list.Where(s => s.Kind == 3))
+                {
+                    TreeNode newNode = new TreeNode();
+                    newNode.Text = element.Name;
+                    newNode.Tag = element;
+                    newNode.ImageKey = "3";
+                    newNode.SelectedImageKey = newNode.ImageKey;
+                    node.Nodes.Add(newNode);
+                }
+            }
+
+            if (list.Any(s => s.Kind == 100))
+            {
+                if (list.Count(s => s.Kind == 100) > 1)
+                {
+                    var node = view.Nodes.Add("Модули рабочей области");
+                    foreach (var element in list.Where(s => s.Kind == 100))
+                    {
+                        TreeNode newNode = new TreeNode();
+                        newNode.Text = element.Name;
+                        newNode.Tag = element;
+                        newNode.ImageKey = "100";
+                        newNode.SelectedImageKey = newNode.ImageKey;
+                        node.Nodes.Add(newNode);
+                    }
+                }
+                else
+                {
+                    var element = list.First(s => s.Kind == 100);
+                    TreeNode newNode = new TreeNode();
+                    newNode.Text = element.Name;
+                    newNode.Tag = element;
+                    newNode.ImageKey = "100";
+                    newNode.SelectedImageKey = newNode.ImageKey;
+                    view.Nodes.Add(newNode);
+                }
+            }
+
+        }
+        protected virtual List<ElementValue> GetLevel()
+        {
+            List<ElementValue> coll = new List<ElementValue>();
+            using (var cnn = new SqlConnection(ConnectionString))
+            {
+                using (var cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandText = "select a.FRM_ID, a.FRM_TYPE, a.FRM_NAME from dbo.FORMS a";
+                    cmd.Connection.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ElementValue v = new ElementValue();
+                        v.Id = reader.GetInt32(0);
+                        v.Kind = reader.GetInt16(1);
+                        v.Name = reader.GetString(2);                        
+                        coll.Add(v);
+                    }
+                }
+            }
+            return coll;
+        }
+        private ImageList GreateImageListTo(ElementKinds kind)
+        {
+            ImageList list = new ImageList();
+            if (kind == ElementKinds.ProjectItem)
+            {
+                list.Images.Add("f", Properties.Resources.FOLDERYELOW16);
+                list.Images.Add("0", Properties.Resources.form_X16);
+                list.Images.Add("1", Properties.Resources.dialog_x16);
+                list.Images.Add("2", Properties.Resources.table_X16);
+                list.Images.Add("3", Properties.Resources.module_x16);
+                list.Images.Add("100", Properties.Resources.module_X16V2);
+
+            }
+
+            return list;
+        }
+    }
+
+    public class ElementBrowserTreeAutonum
+    {
+        /// <summary>
+        /// Идентификатор выбранного элемента
+        /// </summary>
+        public int SelectedElementId { get; set; }
+        /// <summary>
+        /// Выбранное наименование
+        /// </summary>
+        public string SelectedElementName { get; set; }
+        /// <summary>
+        /// Выбранный объект
+        /// </summary>
+        public dynamic SelectedObject { get; private set; }
+        /// <summary>
+        /// Строка соединения
+        /// </summary>
+        public string ConnectionString { get; set; }
+
+        public DialogResult ShowTree()
+        {
+            FormTreeFolder frm = new FormTreeFolder();
+
+            frm.treeView.ImageList = GreateImageListTo(ElementKinds.Autonum);
+            if (frm.treeView.ImageList.Images.Count == 1)
+                frm.treeView.SelectedImageIndex = 0;
+
+            FillRootNodes(frm.treeView);
+            frm.treeView.NodeMouseDoubleClick += delegate (object sender, TreeNodeMouseClickEventArgs e)
+            {
+                frm.treeView.SelectedNode = e.Node;
+                if (e.Node.Nodes.Count == 0)
+                {
+                    if (e.Node != null & (e.Node.Tag as ElementValue) != null)
+                    {
+                        frm.DialogResult = DialogResult.OK;
+                        frm.Close();
+                    }
+                }
+            };
+            frm.FormClosing += delegate (object sender, FormClosingEventArgs e)
+            {
+                if (frm.DialogResult == DialogResult.Cancel) return;
+                if (frm.treeView.SelectedNode == null)
+                    e.Cancel = true;
+                else if ((frm.treeView.SelectedNode.Tag as ElementValue) == null)
+                    e.Cancel = true;
+            };
+            var res = frm.ShowDialog();
+            SelectedElementId = 0;
+            SelectedElementName = string.Empty;
+            if (frm.treeView.SelectedNode != null)
+            {
+                var objSelected = frm.treeView.SelectedNode.Tag as ElementValue;
+                if (objSelected != null)
+                {
+                    SelectedElementId = objSelected.Id;
+                    SelectedElementName = objSelected.Name;
+                }
+                SelectedObject = objSelected;
+            }
+            return res;
+        }
+
+
+
+        private void FillRootNodes(TreeView view)
+        {
+            var list = GetLevel();
+            foreach (var element in list.OrderBy(s=>s.Name))
+            {
+                TreeNode newNode = new TreeNode();
+                newNode.Text = element.Name;
+                newNode.Tag = element;
+                newNode.ImageKey = "0";
+                newNode.SelectedImageKey = newNode.ImageKey;
+                view.Nodes.Add(newNode);
+            }
+
+        }
+        protected virtual List<ElementValue> GetLevel()
+        {
+            List<ElementValue> coll = new List<ElementValue>();
+            using (var cnn = new SqlConnection(ConnectionString))
+            {
+                using (var cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandText = "select FA_ID,FA_NAME  FROM dbo.FRM_AUTONUM";
+                    cmd.Connection.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ElementValue v = new ElementValue();
+                        v.Id = reader.GetInt32(0);
+                        v.Name = reader.GetString(1);
+                        coll.Add(v);
+                    }
+                }
+            }
+            return coll;
+        }
+        private ImageList GreateImageListTo(ElementKinds kind)
+        {
+            ImageList list = new ImageList();
+            if (kind == ElementKinds.Autonum)
+            {
+                list.Images.Add("0", Properties.Resources.numerical_x16);
+            }
+
+            return list;
+        }
+    }
+
+    public class ElementBrowserTreePriceList
+    {
+        public enum ViewData
+        {
+            PriceList,
+            PriceName,
+            All
+        }
+
+        #region Свойства        
+        /// <summary>
+        /// Идентификатор выбранного элемента
+        /// </summary>
+        public int SelectedElementId { get; set; }
+        /// <summary>
+        /// Выбранное наименование
+        /// </summary>
+        public string SelectedElementName { get; set; }
+        /// <summary>
+        /// Выбранный объект
+        /// </summary>
+        public dynamic SelectedObject { get; private set; }
+        /// <summary>
+        /// Строка соединения
+        /// </summary>
+        public string ConnectionString { get; set; }
+        /// <summary>
+        /// Тип отображения, по умолчанию только наименования прайс-листов
+        /// </summary>
+        public ViewData ViewDataKind { get; set; } = ViewData.PriceList;
+        #endregion
+        public DialogResult ShowTree()
+        {
+            FormTreeFolder frm = new FormTreeFolder();
+
+            frm.treeView.ImageList = GreateImageListTo(ElementKinds.PriceList);
+            if (frm.treeView.ImageList.Images.Count == 1)
+                frm.treeView.SelectedImageIndex = 0;
+
+            if (ViewDataKind != ViewData.All)
+                FillRootNodes(frm.treeView);
+            else
+                FillAllModes(frm.treeView);
+            frm.treeView.NodeMouseDoubleClick += delegate (object sender, TreeNodeMouseClickEventArgs e)
+            {
+                frm.treeView.SelectedNode = e.Node;
+                if (e.Node.Nodes.Count == 0)
+                {
+                    if (e.Node != null & (e.Node.Tag as SelectorModel) != null)
+                    {
+                        frm.DialogResult = DialogResult.OK;
+                        frm.Close();
+                    }
+                }
+            };
+            frm.FormClosing += delegate (object sender, FormClosingEventArgs e)
+            {
+                if (frm.DialogResult == DialogResult.Cancel) return;
+                if (frm.treeView.SelectedNode == null)
+                    e.Cancel = true;
+                else if ((frm.treeView.SelectedNode.Tag as SelectorModel) == null)
+                    e.Cancel = true;
+            };
+            var res = frm.ShowDialog();
+            SelectedElementId = 0;
+            SelectedElementName = string.Empty;
+            if (frm.treeView.SelectedNode != null)
+            {
+                var objSelected = frm.treeView.SelectedNode.Tag as SelectorModel;
+                if (objSelected != null)
+                {
+                    SelectedElementId = objSelected.Id;
+                    SelectedElementName = objSelected.Name;
+                }
+                SelectedObject = objSelected;
+            }
+            return res;
+        }
+
+        private void FillRootNodes(TreeView view)
+        {
+            var list = GetLevel();
+            foreach (var element in list.OrderBy(s => s.Name))
+            {
+                TreeNode newNode = new TreeNode();
+                newNode.Text = element.Name;
+                newNode.Tag = element;
+                newNode.ImageKey = element.Kind.ToString();
+                newNode.SelectedImageKey = newNode.ImageKey;
+                view.Nodes.Add(newNode);
+            }
+        }
+        private void FillAllModes(TreeView view)
+        {
+            WA wa = new WA();
+            wa.ConnectionString = this.ConnectionString;
+            var data = wa.GetPriceListSelector();
+            foreach (var element in data.OrderBy(s => s.Name))
+            {
+                TreeNode newNode = new TreeNode();
+                newNode.Text = element.Name;
+                newNode.Tag = element;
+                newNode.ImageKey = element.Kind.ToString();
+                newNode.SelectedImageKey = newNode.ImageKey;
+                view.Nodes.Add(newNode);
+                if(element.Elements.Count>0)
+                {
+                    foreach (var elChild in element.Elements)
+                    {
+                        TreeNode newPrcNameNode = new TreeNode();
+                        newPrcNameNode.Text = elChild.Name;
+                        newPrcNameNode.Tag = elChild;
+                        newPrcNameNode.ImageKey = elChild.Kind.ToString();
+                        newPrcNameNode.SelectedImageKey = newPrcNameNode.ImageKey;
+                        newNode.Nodes.Add(newPrcNameNode);
+                    }
+                }
+            }
+        }
+        protected virtual List<SelectorModel> GetLevel()
+        {
+            if (ViewDataKind == ViewData.PriceList)
+                return GetLevelSimple(0);
+            if (ViewDataKind == ViewData.PriceName)
+                return GetLevelSimple(1);
+            if (ViewDataKind == ViewData.PriceName)
+                return GetLevelAll();
+            return null;
+        }
+        protected virtual List<SelectorModel> GetLevelSimple(int kind=0)
+        {
+            List<SelectorModel> coll = new List<SelectorModel>();
+            using (var cnn = new SqlConnection(ConnectionString))
+            {
+                using (var cmd = cnn.CreateCommand())
+                {
+                    if(kind==1)
+                        cmd.CommandText = "select a.PRC_ID, a.PRC_NAME from dbo.PRC_NAMES a";
+                    else
+                        cmd.CommandText = "select PRL_ID, PRL_NAME  FROM dbo.PRL_LISTS";
+                    cmd.Connection.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        SelectorModel v = new SelectorModel();
+                        v.Id = reader.GetInt32(0);
+                        v.Name = reader.GetString(1);
+                        v.Kind = kind;
+                        coll.Add(v);
+                    }
+                }
+            }
+            return coll;
+        }
+        protected virtual List<SelectorModel> GetLevelAll()
+        {
+            List<SelectorModel> coll = new List<SelectorModel>();
+            using (var cnn = new SqlConnection(ConnectionString))
+            {
+                using (var cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandText = "select a.PRC_ID, a.PRC_NAME from dbo.PRC_NAMES a";
+                    cmd.Connection.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        SelectorModel v = new SelectorModel();
+                        v.Id = reader.GetInt32(0);
+                        v.Name = reader.GetString(1);
+                        v.Kind = 1;
+                        coll.Add(v);
+                    }
+                }
+            }
+            return coll;
+        }
+        private ImageList GreateImageListTo(ElementKinds kind)
+        {
+            ImageList list = new ImageList();
+            if (kind == ElementKinds.PriceList)
+            {
+                list.Images.Add("0", Properties.Resources.pricelist_x16);
+                list.Images.Add("1", Properties.Resources.pricename_x16);
+            }
+
+            return list;
+        }
+    }
+
+    /// <summary>
+    /// Выбор валюты
+    /// </summary>
+    public class ElementBrowserTreeSimple
+    {
+        /// <summary>
+        /// Идентификатор выбранного элемента
+        /// </summary>
+        public int SelectedElementId { get; set; }
+        /// <summary>
+        /// Выбранное наименование
+        /// </summary>
+        public string SelectedElementName { get; set; }
+        /// <summary>
+        /// Выбранный объект
+        /// </summary>
+        public dynamic SelectedObject { get; private set; }
+
+        public ElementKinds ElementKind { get; set; }
+        /// <summary>
+        /// Строка соединения
+        /// </summary>
+        public string ConnectionString { get; set; }
+
+        public DialogResult ShowTree()
+        {
+            FormTreeFolder frm = new FormTreeFolder();
+
+            frm.treeView.ImageList = GreateImageListTo(ElementKind);
+            if (frm.treeView.ImageList.Images.Count == 1)
+                frm.treeView.SelectedImageIndex = 0;
+
+            FillRootNodes(frm.treeView);
+            frm.treeView.NodeMouseDoubleClick += delegate (object sender, TreeNodeMouseClickEventArgs e)
+            {
+                frm.treeView.SelectedNode = e.Node;
+                if (e.Node.Nodes.Count == 0)
+                {
+                    if (e.Node != null & (e.Node.Tag as ElementValue) != null)
+                    {
+                        frm.DialogResult = DialogResult.OK;
+                        frm.Close();
+                    }
+                }
+            };
+            frm.FormClosing += delegate (object sender, FormClosingEventArgs e)
+            {
+                if (frm.DialogResult == DialogResult.Cancel) return;
+                if (frm.treeView.SelectedNode == null)
+                    e.Cancel = true;
+                else if ((frm.treeView.SelectedNode.Tag as ElementValue) == null)
+                    e.Cancel = true;
+            };
+            var res = frm.ShowDialog();
+            SelectedElementId = 0;
+            SelectedElementName = string.Empty;
+            if (frm.treeView.SelectedNode != null)
+            {
+                var objSelected = frm.treeView.SelectedNode.Tag as ElementValue;
+                if (objSelected != null)
+                {
+                    SelectedElementId = objSelected.Id;
+                    SelectedElementName = objSelected.Name;
+                }
+                SelectedObject = objSelected;
+            }
+            return res;
+        }
+
+
+
+        private void FillRootNodes(TreeView view)
+        {
+            var list = GetLevel();
+            foreach (var element in list.OrderBy(s => s.Name))
+            {
+                TreeNode newNode = new TreeNode();
+                newNode.Text = element.Name;
+                newNode.Tag = element;
+                newNode.ImageKey = "0";
+                newNode.SelectedImageKey = newNode.ImageKey;
+                view.Nodes.Add(newNode);
+            }
+
+        }
+        protected virtual List<ElementValue> GetLevel()
+        {
+            List<ElementValue> coll = new List<ElementValue>();
+            using (var cnn = new SqlConnection(ConnectionString))
+            {
+                using (var cmd = cnn.CreateCommand())
+                {
+                    if(ElementKind==ElementKinds.Currency)
+                        cmd.CommandText = "select CRC_ID,CRC_NAME FROM dbo.CURRENCIES";
+                    else if (ElementKind == ElementKinds.Unit)
+                        cmd.CommandText = "select UN_ID, UN_NAME FROM dbo.UNITS";
+                    cmd.Connection.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ElementValue v = new ElementValue();
+                        v.Id = reader.GetInt32(0);
+                        v.Name = reader.GetString(1);
+                        coll.Add(v);
+                    }
+                }
+            }
+            return coll;
+        }
+        private ImageList GreateImageListTo(ElementKinds kind)
+        {
+            ImageList list = new ImageList();
+            if (kind == ElementKinds.Currency)
+            {
+                list.Images.Add("0", Properties.Resources.dollar_x16);
+            }
+            else if (kind == ElementKinds.Unit)
+            {
+                list.Images.Add("0", Properties.Resources.unit_x16);
             }
 
             return list;

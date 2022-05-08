@@ -38,10 +38,16 @@ namespace A7UINetTest
             this.btnShowTreeBinders = new System.Windows.Forms.Button();
             this.chkOnlyFoldersTreeShow = new System.Windows.Forms.CheckBox();
             this.groupBoxTree = new System.Windows.Forms.GroupBox();
+            this.btnPriceListTree = new System.Windows.Forms.Button();
+            this.btnShowAutonum = new System.Windows.Forms.Button();
+            this.btnShowTreeProjectitems = new System.Windows.Forms.Button();
             this.btnShowTreeAccounts = new System.Windows.Forms.Button();
             this.groupBoxWA = new System.Windows.Forms.GroupBox();
+            this.btnPricelistSelector = new System.Windows.Forms.Button();
             this.btnPriceList = new System.Windows.Forms.Button();
             this.PriceNameColl = new System.Windows.Forms.Button();
+            this.btnShowPriceNameTree = new System.Windows.Forms.Button();
+            this.btnShowPrlListPriceNames = new System.Windows.Forms.Button();
             this.groupBoxTree.SuspendLayout();
             this.groupBoxWA.SuspendLayout();
             this.SuspendLayout();
@@ -136,6 +142,11 @@ namespace A7UINetTest
             // 
             // groupBoxTree
             // 
+            this.groupBoxTree.Controls.Add(this.btnShowPrlListPriceNames);
+            this.groupBoxTree.Controls.Add(this.btnShowPriceNameTree);
+            this.groupBoxTree.Controls.Add(this.btnPriceListTree);
+            this.groupBoxTree.Controls.Add(this.btnShowAutonum);
+            this.groupBoxTree.Controls.Add(this.btnShowTreeProjectitems);
             this.groupBoxTree.Controls.Add(this.chkOnlyFoldersTreeShow);
             this.groupBoxTree.Controls.Add(this.btnShowTreeFolders);
             this.groupBoxTree.Controls.Add(this.btnShowTreeBinders);
@@ -146,10 +157,43 @@ namespace A7UINetTest
             this.groupBoxTree.Controls.Add(this.btnShowTreeMiscs);
             this.groupBoxTree.Location = new System.Drawing.Point(12, 40);
             this.groupBoxTree.Name = "groupBoxTree";
-            this.groupBoxTree.Size = new System.Drawing.Size(184, 166);
+            this.groupBoxTree.Size = new System.Drawing.Size(184, 288);
             this.groupBoxTree.TabIndex = 3;
             this.groupBoxTree.TabStop = false;
             this.groupBoxTree.Text = "Выбор элемента из дерева";
+            // 
+            // btnPriceListTree
+            // 
+            this.btnPriceListTree.Location = new System.Drawing.Point(87, 187);
+            this.btnPriceListTree.Name = "btnPriceListTree";
+            this.btnPriceListTree.Size = new System.Drawing.Size(75, 23);
+            this.btnPriceListTree.TabIndex = 4;
+            this.btnPriceListTree.Tag = "binder";
+            this.btnPriceListTree.Text = "ShowPriceList";
+            this.btnPriceListTree.UseVisualStyleBackColor = true;
+            this.btnPriceListTree.Click += new System.EventHandler(this.btnPriceListTree_Click);
+            // 
+            // btnShowAutonum
+            // 
+            this.btnShowAutonum.Location = new System.Drawing.Point(87, 158);
+            this.btnShowAutonum.Name = "btnShowAutonum";
+            this.btnShowAutonum.Size = new System.Drawing.Size(75, 23);
+            this.btnShowAutonum.TabIndex = 4;
+            this.btnShowAutonum.Tag = "binder";
+            this.btnShowAutonum.Text = "ShowAutonum";
+            this.btnShowAutonum.UseVisualStyleBackColor = true;
+            this.btnShowAutonum.Click += new System.EventHandler(this.btnShowAutonum_Click);
+            // 
+            // btnShowTreeProjectitems
+            // 
+            this.btnShowTreeProjectitems.Location = new System.Drawing.Point(87, 129);
+            this.btnShowTreeProjectitems.Name = "btnShowTreeProjectitems";
+            this.btnShowTreeProjectitems.Size = new System.Drawing.Size(75, 23);
+            this.btnShowTreeProjectitems.TabIndex = 3;
+            this.btnShowTreeProjectitems.Tag = "binder";
+            this.btnShowTreeProjectitems.Text = "ShowProjectItems";
+            this.btnShowTreeProjectitems.UseVisualStyleBackColor = true;
+            this.btnShowTreeProjectitems.Click += new System.EventHandler(this.btnShowTreeProjectitems_Click);
             // 
             // btnShowTreeAccounts
             // 
@@ -164,6 +208,7 @@ namespace A7UINetTest
             // 
             // groupBoxWA
             // 
+            this.groupBoxWA.Controls.Add(this.btnPricelistSelector);
             this.groupBoxWA.Controls.Add(this.btnPriceList);
             this.groupBoxWA.Controls.Add(this.PriceNameColl);
             this.groupBoxWA.Location = new System.Drawing.Point(203, 41);
@@ -172,6 +217,17 @@ namespace A7UINetTest
             this.groupBoxWA.TabIndex = 4;
             this.groupBoxWA.TabStop = false;
             this.groupBoxWA.Text = "Проверка коллекций";
+            // 
+            // btnPricelistSelector
+            // 
+            this.btnPricelistSelector.Location = new System.Drawing.Point(7, 78);
+            this.btnPricelistSelector.Name = "btnPricelistSelector";
+            this.btnPricelistSelector.Size = new System.Drawing.Size(84, 23);
+            this.btnPricelistSelector.TabIndex = 1;
+            this.btnPricelistSelector.Tag = "pricelistselector";
+            this.btnPricelistSelector.Text = "PriceListColl";
+            this.btnPricelistSelector.UseVisualStyleBackColor = true;
+            this.btnPricelistSelector.Click += new System.EventHandler(this.ActionCheckColl_Click);
             // 
             // btnPriceList
             // 
@@ -194,6 +250,28 @@ namespace A7UINetTest
             this.PriceNameColl.Text = "btnPriceName";
             this.PriceNameColl.UseVisualStyleBackColor = true;
             this.PriceNameColl.Click += new System.EventHandler(this.ActionCheckColl_Click);
+            // 
+            // btnShowPriceNameTree
+            // 
+            this.btnShowPriceNameTree.Location = new System.Drawing.Point(87, 216);
+            this.btnShowPriceNameTree.Name = "btnShowPriceNameTree";
+            this.btnShowPriceNameTree.Size = new System.Drawing.Size(75, 23);
+            this.btnShowPriceNameTree.TabIndex = 4;
+            this.btnShowPriceNameTree.Tag = "binder";
+            this.btnShowPriceNameTree.Text = "ShowPriceNames";
+            this.btnShowPriceNameTree.UseVisualStyleBackColor = true;
+            this.btnShowPriceNameTree.Click += new System.EventHandler(this.btnShowPriceNameTree_Click);
+            // 
+            // btnShowPrlListPriceNames
+            // 
+            this.btnShowPrlListPriceNames.Location = new System.Drawing.Point(87, 245);
+            this.btnShowPrlListPriceNames.Name = "btnShowPrlListPriceNames";
+            this.btnShowPrlListPriceNames.Size = new System.Drawing.Size(75, 23);
+            this.btnShowPrlListPriceNames.TabIndex = 4;
+            this.btnShowPrlListPriceNames.Tag = "binder";
+            this.btnShowPrlListPriceNames.Text = "ShowPrlListPriceNames";
+            this.btnShowPrlListPriceNames.UseVisualStyleBackColor = true;
+            this.btnShowPrlListPriceNames.Click += new System.EventHandler(this.btnShowPrlListPriceNames_Click);
             // 
             // FormMain
             // 
@@ -227,6 +305,12 @@ namespace A7UINetTest
         private System.Windows.Forms.GroupBox groupBoxWA;
         private System.Windows.Forms.Button btnPriceList;
         private System.Windows.Forms.Button PriceNameColl;
+        private System.Windows.Forms.Button btnPricelistSelector;
+        private System.Windows.Forms.Button btnShowTreeProjectitems;
+        private System.Windows.Forms.Button btnShowAutonum;
+        private System.Windows.Forms.Button btnPriceListTree;
+        private System.Windows.Forms.Button btnShowPriceNameTree;
+        private System.Windows.Forms.Button btnShowPrlListPriceNames;
     }
 }
 

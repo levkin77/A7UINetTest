@@ -19,7 +19,7 @@ namespace A7UINet.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -196,6 +196,26 @@ namespace A7UINet.Properties {
         internal static System.Drawing.Bitmap binder_icon16 {
             get {
                 object obj = ResourceManager.GetObject("binder_icon16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dialog_x16 {
+            get {
+                object obj = ResourceManager.GetObject("dialog_x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dollar_x16 {
+            get {
+                object obj = ResourceManager.GetObject("dollar_x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -413,6 +433,16 @@ namespace A7UINet.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap form_X16 {
+            get {
+                object obj = ResourceManager.GetObject("form_X16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap misc_fld16 {
             get {
                 object obj = ResourceManager.GetObject("misc_fld16", resourceCulture);
@@ -443,6 +473,26 @@ namespace A7UINet.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap module_x16 {
+            get {
+                object obj = ResourceManager.GetObject("module_x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap module_X16V2 {
+            get {
+                object obj = ResourceManager.GetObject("module_X16V2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap msc_iconag {
             get {
                 object obj = ResourceManager.GetObject("msc_iconag", resourceCulture);
@@ -463,6 +513,46 @@ namespace A7UINet.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap numerical_x16 {
+            get {
+                object obj = ResourceManager.GetObject("numerical_x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pricelist_x16 {
+            get {
+                object obj = ResourceManager.GetObject("pricelist_x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pricename_x16 {
+            get {
+                object obj = ResourceManager.GetObject("pricename_x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap table_X16 {
+            get {
+                object obj = ResourceManager.GetObject("table_X16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap template_fld16v2 {
             get {
                 object obj = ResourceManager.GetObject("template_fld16v2", resourceCulture);
@@ -476,6 +566,16 @@ namespace A7UINet.Properties {
         internal static System.Drawing.Bitmap template_icon16v2 {
             get {
                 object obj = ResourceManager.GetObject("template_icon16v2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap unit_x16 {
+            get {
+                object obj = ResourceManager.GetObject("unit_x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

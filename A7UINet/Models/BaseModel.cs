@@ -5,6 +5,7 @@ namespace A7UINet
     public abstract class WAModel
     {
         public WA WA { get; set; }
+        public object ObjectTag { get; set; }
     }
     public class BaseModel: WAModel
     {
@@ -25,4 +26,5 @@ namespace A7UINet
         /// </summary>
         public string Memo { get; set; }
     }
+
 }
